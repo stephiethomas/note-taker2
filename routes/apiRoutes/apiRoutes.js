@@ -1,10 +1,11 @@
 const fs = require('fs');
 const router = require("express").Router();
-// const path = require('path');
 const {saveNote} = require ('../../db/db.json');
-// const {updateNote} = require('../..db/db/json');
 const {v4: uuidv4} = require('uuid');
-// const deleteNote = require('deleteNote');
+// const savedNote = ('pushedNotes');
+
+
+
 
 
 //  const saveNote = fs.readFileSync(path.join(__dirname, '../../db/db.json'));
@@ -16,12 +17,12 @@ router.get('/notes', (req, res) => {
 
 //Post route
 router.post('/notes', (req, res) => {
-   let newNote = req.body.id;
-   res.json(newNote);
+   let savedNote = req.body.id;
+   res.json("savedNote, title, uuid");
 //    return console.log("+newNote.title.uuid")
    
     fs.readFileSync("db/db.json", (err, jsonString) => {
-        newNote = JSON.parse(jsonString);
+        savedNote = JSON.parse(jsonString);
         return;
     }); 
     
@@ -35,7 +36,7 @@ router.post('/notes', (req, res) => {
                    return;
                }
                ok: true,
-               message; 'success'
+               message; (savedNote)
                
            });
 
@@ -45,6 +46,9 @@ router.post('/notes', (req, res) => {
     // fs.writeFileSync('/db/db.json', JSON.stringify(saveNote));
     // res.json(saveNote);
 });
+router.get('/notes', function(req,res) {
+    res.sendFile(path.join(__dirname, "../public/notes.html"));
+});
 
 //Delete route (array.filter())
 
@@ -53,7 +57,7 @@ router.delete('/notes/:ID', (req, res) => {
     updateNote();
 
     const deleteNote = updateNote => {
-        fs.writeFile('db/db.json', JSON.stringify(notes, '/'), err => {
+        fs.writeFile('db/db.json', JSON.stringify(notes, '\t'), err => {
             if (err);
             return;
         });
