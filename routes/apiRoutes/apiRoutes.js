@@ -1,8 +1,13 @@
 const fs = require('fs');
-const router = express.Router();
+const router = require("express").Router();
+// const path = require('path');
+const {saveNote} = require ('../../db/db.json');
+// const {updateNote} = require('../..db/db/json');
+const {v4: uuidv4} = require('uuid');
+// const deleteNote = require('deleteNote');
 
-// save note
-const saveNote = fs.readFileSync(path.join(__dirname, '../db/db.json'));
+
+//  const saveNote = fs.readFileSync(path.join(__dirname, '../../db/db.json'));
 
 //Retrieve note route
 router.get('/notes', (req, res) => {
@@ -11,21 +16,48 @@ router.get('/notes', (req, res) => {
 
 //Post route
 router.post('/notes', (req, res) => {
-    let pushNote = req.body;
-    saveNote.push(pushNote);
+   let newNote = req.body.id;
+   res.json(newNote);
+//    return console.log("+newNote.title.uuid")
+   
+    fs.readFileSync("db/db.json", (err, jsonString) => {
+        newNote = JSON.parse(jsonString);
+        return;
+    }); 
+    
+       
 
-    fs.writeFileSync('/db/db.json', JSON.stringify(saveNote));
-    res.json(saveNote);
+   const writeFile = writeNote => {
+       return new Promise((resolve, reject) => {
+           fs.writeFileSync('db/db.json', writeNote, err => {
+               if (err) {
+                   reject(err);
+                   return;
+               }
+               ok: true,
+               message; 'success'
+               
+           });
+
+       });
+   };
+
+    // fs.writeFileSync('/db/db.json', JSON.stringify(saveNote));
+    // res.json(saveNote);
 });
 
-// router.get('/notes/:id', (req, res) => {
-//     const note = findByID(req.params.id, notes);
-//     if(note) {
-//        res.json(notes);
-//     } else {
-//         res.send(404);
-//     }
-    
-// });
+//Delete route (array.filter())
+
+router.delete('/notes/:ID', (req, res) => {
+    notes.splice(req.params.ID, 1);
+    updateNote();
+
+    const deleteNote = updateNote => {
+        fs.writeFile('db/db.json', JSON.stringify(notes, '/'), err => {
+            if (err);
+            return;
+        });
+    };
+});
 
 module.exports = router;
